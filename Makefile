@@ -1,4 +1,5 @@
 PREFIX := /usr/local
+PREFIX := /usr/pkg
 
 all:
 
