@@ -227,7 +227,11 @@ do_snapshots () # properties, flags, snapname, oldglob, [targets...]
 if [ "$(uname)" = "Darwin" ]; then
   GETOPT_BIN="$(brew --prefix gnu-getopt 2> /dev/null || echo /usr/local)/bin/getopt"
 else
-  GETOPT_BIN="getopt"
+  if [ -x /usr/pkg/bin/getopt ]; then
+    GETOPT_BIN="/usr/pkg/bin/getopt"
+  else
+    GETOPT_BIN="getopt"
+  fi
 fi
 
 GETOPT=$($GETOPT_BIN \
