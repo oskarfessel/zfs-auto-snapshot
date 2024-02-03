@@ -1,7 +1,26 @@
 PREFIX := /usr/local
+
+.if exists(/usr/bin/uname)
+UNAME=/usr/bin/uname
+.elif exists(/bin/uname)
+UNAME=/bin/uname
+.elif exists(/run/current-system/sw/bin/uname)
+UNAME=/run/current-system/sw/bin/uname
+.else
+UNAME=echo Unknown
+.endif
+
+.if !defined(OPSYS)
+OPSYS:=			${:!${UNAME} -s!:S/-//g:S/\///g:C/^CYGWIN_.*$/Cygwin/}
+MAKEFLAGS+=		OPSYS=${OPSYS:Q}
+.endif
+
+.if ${OPSYS} == "NetBSD"
 PREFIX := /usr/pkg
+.endif
 
 all:
+	echo ${PREFIX}
 
 install:
 	install -d $(DESTDIR)/etc/cron.d
